@@ -8937,6 +8937,482 @@ def sortColors(self, nums: List[int]) -> None:
             curr += 1
 ```
 
+Binary search
+Bisect library
+import bisect
+#Get index to insert
+bisect.bisect_left(array, val, lo=0, hi=len(a))
+# Does insert
+bisect.insort_left(array, val, lo=0, hi=len(a))
+
+#Find index
+def find_index(a, x, start = 0, end = None):
+    # Locate the leftmost value exactly equal to x.
+    i = bisect.bisect_left(a, x, start, end)
+    if i != len(a) and a[i] == x:
+        return i
+    return -1
+
+General binary search alg
+def binary_search(array, target):
+    L = 0
+    R = len(array) − 1
+    while L <= R:
+        m = (L + R) // 2
+        if A[m] < T then
+            L = m + 1
+        else if A[m] > T then
+            R = m − 1
+        else:
+            return m
+    return unsuccessful
+
+Counter
+from collections import Counter
+c = Counter(iterable)
+Dictionary
+D = dict()
+# or
+D = {}
+D.get() never raises value error, returns None when empty
+D[] raises a value error
+
+Check for key
+x in D 
+Default dict
+from collections import defaultdict 
+# Dict uses f() by default for unknown values
+d = defaultdict(f)
+d[notSet] = f()
+
+# can use dict or list 
+d = defaultdict(list)
+d = defualtdict(dict)
+Data class
+from dataclasses import dataclass
+@dataclass
+class Rectangle
+   # included in sort
+    left :int
+    bottom :int  
+    right :int
+    # NOT included in sort.
+    top :int = field(compare = false)
+    # __init__() is autocreated
+ 
+# Use *args to create
+coords = [1,2,3,4]
+rec = Rectangle(*coords)
+Round towards zero
+def integer_divide_towards_zero(a, b):
+    return -(-a // b) if (a < 0) ^ (b < 0) else a // b
+Named Tuples 
+from collections import namedtuple
+Entry = namedtuple("Entry",['time', 'value'])
+e = Entry(time = 1, value = 2)
+e[0] == e.time #True
+
+
+Nonlocal v global: https://www.dotnetperls.com/nonlocal-python
+Queue / Stack 
+# Queue
+from collections import deque
+q = deque()  
+q.append( x )
+X = q.popleft()
+
+# Stack
+l = []
+l.append( x )
+X = l.pop()
+Type hinting
+from typing import List, Dict, Tuple, Sequence
+D :Dict[int,int]
+L :List[str]n
+Heap
+# Min heap only, use negatives for max heap.
+import heapq
+l = list()
+# Linear time, only at startup
+heapq.heapify(l)
+heapq.push(l, item)
+item = heapq.pop(l)
+Lists
+Reverse
+l[::-1]
+Delete list element
+l[:n] + l[n+1:]
+
+DO NOT USE 
+l[:n-1] +l[n:]
+(for n =1; l[n-1:]= n[-1:] = whole list)
+Slice
+A = [0,1,2]
+a[start:stop]  # items start through stop-1                 a[0:1] = [0]
+a[start:]      # items start through the end of the array   a[1:] = [1,2]
+                                                            a[2:]=[2]
+a[:stop]       # items from the beginning through stop-1    a[:1] = [0]
+               # stop <= len(a), but a[len(a)] is index out of bounds
+a[:]           # a copy of the whole array
+List initialization
+L = [[0 for _ in range(X)] for __ in range(Y)]
+The outmost list is the leftmost access. The innermost list is the rightmost access
+L[y][x]
+Eg: 
+    len(L)    = Y
+    len(L[0]) = X
+Prepend list
+s.insert(0, x)
+Unit test
+import unittest
+
+class basicTest(unittest.TestCase):
+    def test(self):
+        self.assertEqual( A, B)       
+
+unittest.main()
+Itertools
+
+import itertools
+
+#Return successive r length permutations of elements in the iterable.
+# permutations('ABCD', r = 2) --> AB AC AD BA BC BD CA CB CD DA DB DC
+itertools.permutations(iterable, r=None)
+
+# Cartesian product of input iterables.
+# product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
+itertools.product(*iterables, repeat=1)
+
+def phoneText(self, digits) -> List[str]:
+	buttons = {'2':'abc','3':'def','4': 'ghi'} #etc
+iters = [buttons[d] for d in digits]
+		# itertools.product(*args) returns the
+		# Cartesian product of the input iterables.
+return [''.join(x) for x in itertools.product(*iters)]
+Zip_longest
+for a,b in zip(listA,listB):
+	# Stops when first iterator is exhausted
+
+from itertools import zip_longest
+for a,b in itertools.zip_longest(a,b, [fillvalue = None])
+	#Does NOT STOP
+Cache annotation
+from functools import lru_cache
+@cache(maxsize = 128)
+def some_expensive_function(x)
+Algorithms
+Reverse linked list in place
+def reverse( head ) 
+        prev = None
+        current = head
+        while current is not None:
+            swap = current.next
+            current.next = prev
+            prev = current
+            current = swap
+        return prev
+
+Merge 2 linked lists
+# Need to iterate over previous
+def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        outHead = ListNode()
+        prev = outHead
+        while l1 is not None and l2 is not None:
+            if l1.val < l2.val:
+                prev.next = l1
+                l1 = l1.next
+            else:
+                prev.next = l2
+                l2 = l2.next
+            prev = prev.next
+	  
+        # Exactly one of l1 or l2 is not empty
+        if l1 is None:
+            prev.next = l2
+        else:
+            prev.next = l1
+        return outHead.next
+
+K th largest number
+(K is zero indexed)
+import heapq
+# min heap
+heap = []
+counter = 0
+for number in iterables:
+	if counter < k:
+		counter += 1
+		heapq.heappush(heap,number)
+	if number > heap[0]:
+		heapq.heapreplace(heap, number)
+K_largest = heap[0]
+Rectangle overlap
+Intuition: complete disjoint both vertical and horizontal
+
+if RectA.Left < RectB.Right and RectA.Right > RectB.Left and
+     RectA.Top > RectB.Bottom and RectA.Bottom < RectB.Top:
+	Return OVERLAP-TRUE
+(Reverse Y-vals for matrix orientation (y from top to bottom))
+Depth first search
+def dfs(root)
+	if root is None:
+return
+visit(root)
+mark(node)
+for node in root.adjacents:
+	If node.marked == false:
+		dfs(node);'
+
+Dfs():
+for v in vertices:
+		if(v not in visited):
+			dfs-visit(v)
+DFS-Visit(v):
+	previsit(v) // optional
+	For n in neighbors(v):
+		if(n not in visited):
+			// set predecessor 
+			n.pi = v
+			// recurse
+			dfs-visit(n)
+	postvist(v)
+
+Topological sort is the opposite of the post visit order. Equivalently, topological sort is when postvisit inserts v at the front of a linked list.
+
+Khan's topo sort
+L ← Empty list that will contain the sorted elements
+S ← Set of all nodes with no incoming edge
+while S is not empty do
+    remove a node n from S
+    add n to L
+    for each node m with an edge e from n to m do
+        remove edge e from the graph
+        if m has no other incoming edges then
+            insert m into S
+
+if graph has edges then
+    return error   (graph has at least one cycle)
+else 
+    return L   (a topologically sorted order)
+
+Breadth first search 
+BFS always finds the shortest path on an unweighted graph.
+from collections import deque
+
+def bfs(root):
+    queue = deque()
+
+    # Mark not needed for tree
+    visit_and_mark(root)
+
+    queue.append(root)
+    while len(queue) > 0:
+
+        n = queue.popleft()
+
+       # Mark not needed for tree
+        visit_and_mark(root)
+         
+         # Or iterate for graph
+         if n.left is not None:
+             queue.append(n.left)
+         if n.right is not None:
+              queue.append(n.right)
+Kudane's Algorithm (max contiguous subsequence)
+def max_subarray(numbers):
+    """Find the largest sum of any contiguous subarray. 
+EMPTY ARRAY NOT ALLOWED"""
+    best_sum = 0  # or: float('-inf')
+    current_sum = 0
+    for x in numbers:
+        current_sum = max(0, current_sum + x)
+        best_sum = max(best_sum, current_sum)
+    return best_sum
+
+Empty Array Allowed
+    def maxSubArray(self, nums: List[int]) -> int:
+        bestEndHere = -float('inf')
+        bestOverall = -float('inf')
+        for n in nums:
+            bestEndHere = max(bestEndHere + n, n)
+            bestOverall = max(bestEndHere, bestOverall)
+        return bestOverall
+Yield in-order traversal 
+# Python 3
+def inorder(t) -> Iterator[int]
+    if t is not None:
+        yield from inorder(t.left)
+        yield t.key
+        yield from inorder(t.right)
+g = inorder(t)
+
+LinkedList Queue
+# remove from queue
+duque():
+# removal algorithm
+[advance head]
+
+# Don't forget
+if not head:
+    		tail = None
+
+# add to queue
+enque():
+	newNode = []
+	if tail:
+	   tail.next = newNode
+         tail = newNode
+      else:
+		head = new
+           tail = new
+Exponentiation Algorithm
+def myPow(self, x: float, n: int) -> float:
+    if n < 0:
+        x = 1 / x
+        n = -n
+    if n ==0:
+        return 1
+    y = 1
+    while n > 1:
+        if n%2 ==0:
+            x = x*x
+            n = n // 2
+        else:
+            y = x * y
+            x = x * x
+            n = (n - 1) // 2
+     return x*y
+Reconstruct tree
+Start from not inorder traversal
+inorder / postorder:
+https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/solution/
+
+inorder / preorder
+https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/
+Binary Search Tree
+Insert algorithm
+class Solution:
+    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+        if not root:
+            return TreeNode(val)
+        
+        if val > root.val:
+            # insert into the right subtree
+            root.right = self.insertIntoBST(root.right, val)
+        else:
+            # insert into the left subtree
+            root.left = self.insertIntoBST(root.left, val)
+        return root
+Traversal of BST
+Pre-order visits root first.
+Post-order visits root last.
+In order visits in sorted order.
+Dynamic Programming
+Knapsack
+# A naive recursive implementation
+# of 0-1 Knapsack Problem
+ 
+# Returns the maximum value that
+# can be put in a knapsack of
+# capacity W 
+
+#          Max weight                         n=Len of items
+def knapSack(W: int, wt: List[int], val: List[int], n: int): 
+    # Base Case
+    if n == 0 or W == 0:
+        return 0
+ 
+    # If weight of the nth item is
+    more than Knapsack of capacity W,
+    # then this item cannot be included
+    # in the optimal solution
+    if (wt[n-1] > W):
+        return knapSack(W, wt, val, n-1)
+ 
+    # return the maximum of two cases:
+    # (1) nth item included
+    # (2) not included
+    else:
+        included = val[n-1] + \
+           knapSack(W-wt[n-1], wt, val, n-1)
+        excluded = knapSack(W, wt, val, n-1))
+	   return max(included, excluded)
+Count twos (or other digit)
+public class Question {	
+	public static int count2sInRangeAtDigit(int number, int d) {
+		int powerOf10 = (int) Math.pow(10, d);
+		int nextPowerOf10 = powerOf10 * 10;
+		int right = number % powerOf10;
+		
+		int roundDown = number - number % nextPowerOf10;
+		int roundUp = roundDown + nextPowerOf10;
+		
+		int digit = (number / powerOf10) % 10; 
+		if (digit < 2) { // if the digit in spot digit is 
+			return roundDown / 10;
+		} else if (digit == 2) {
+			return roundDown / 10 + right + 1;
+		} else ( digit > 2) {
+			return roundUp / 10;
+		}
+	}
+	
+	public static int count2sInRange(int number) {
+		int count = 0;
+		int len = String.valueOf(number).length();
+		for (int digit = 0; digit < len; digit++) {
+			count += count2sInRangeAtDigit(number, digit);
+		}
+		return count;
+	}
+
+
+Longest common subsequence
+LCSLength(X[1..m], Y[1..n])
+    C = array[m][n]
+    for i := 0..m
+        C[i][0] = 0
+    for j := 0..n
+        C[0][j] = 0
+    for i := 1..m
+        for j := 1..n
+            // last char the same
+            if X[i] = Y[j]
+                C[i][j] := C[i-1][j-1] + 1
+            // max with stomping front and back
+            else
+                C[i][j] := max(C[i][j-1], C[i-1][j])
+    return C[m][n]
+Calendar overlap 
+import bisect
+
+class Interval:
+    def __init__(self, s, e):
+        self.s = s
+        self.e = e
+    def __lt__(self, other):
+        return self.e < other.s
+    def __gt__(self, other):	
+        return self.s > other.e
+    def __eq__(self, other):
+        return not self < other and not self > other   
+
+class MyCalendar:
+    def __init__(self):
+        self.intervals = []
+        
+    def book(self, start: int, end: int) -> bool:
+        # end - 1 to avoid overlap
+        interval = Interval(start, end-1)
+        index = bisect.bisect(self.intervals, interval)
+        
+        # find the righmost interval less than or equal 
+        # to the input-interval. If equal i.e. an overlap, 
+        # then we return False
+        if index and self.intervals[index-1] == interval:
+            return False
+        self.intervals.insert(index, interval)
+        return True
 
 https://memgraph.com/blog/graph-algorithms-cheat-sheet-for-coding-interviews
 
